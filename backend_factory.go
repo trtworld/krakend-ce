@@ -3,14 +3,13 @@ package krakend
 import (
 	"context"
 	"fmt"
-
 	amqp "github.com/devopsfaith/krakend-amqp/v2"
+	"github.com/devopsfaith/krakend-ce/v2/martian"
 	cel "github.com/devopsfaith/krakend-cel/v2"
 	cb "github.com/devopsfaith/krakend-circuitbreaker/v2/gobreaker/proxy"
 	httpcache "github.com/devopsfaith/krakend-httpcache/v2"
 	lambda "github.com/devopsfaith/krakend-lambda/v2"
 	lua "github.com/devopsfaith/krakend-lua/v2/proxy"
-	martian "github.com/devopsfaith/krakend-martian/v2"
 	metrics "github.com/devopsfaith/krakend-metrics/v2/gin"
 	oauth2client "github.com/devopsfaith/krakend-oauth2-clientcredentials/v2"
 	opencensus "github.com/devopsfaith/krakend-opencensus/v2"
