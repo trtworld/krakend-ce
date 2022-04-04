@@ -1,3 +1,32 @@
+## Custom Backend 
+The Martian package uses DefaultHTTPStatusHandler, we replaced it with NoOpHTTPStatusHandler.
+
+Moved [Martian](https://github.com/devopsfaith/krakend-martian) here.
+
+Override the NewHTTPProxyWithHTTPExecutor from
+```
+func NewHTTPProxyWithHTTPExecutor(remote *config.Backend, re client.HTTPRequestExecutor, dec encoding.Decoder) proxy.Proxy {
+	if remote.Encoding == encoding.NOOP {
+		return proxy.NewHTTPProxyDetailed(remote, re, client.NoOpHTTPStatusHandler, proxy.NoOpHTTPResponseParser)
+	}
+
+	ef := proxy.NewEntityFormatter(remote)
+	rp := proxy.DefaultHTTPResponseParserFactory(proxy.HTTPResponseParserConfig{Decoder: dec, EntityFormatter: ef})
+	return proxy.NewHTTPProxyDetailed(remote, re, client.GetHTTPStatusHandler(remote), rp)
+}
+```
+to
+```
+func NewHTTPProxyWithHTTPExecutor(remote *config.Backend, re client.HTTPRequestExecutor, dec encoding.Decoder) proxy.Proxy {
+	if remote.Encoding == encoding.NOOP {
+		return proxy.NewHTTPProxyDetailed(remote, re, client.NoOpHTTPStatusHandler, proxy.NoOpHTTPResponseParser)
+	}
+
+	ef := proxy.NewEntityFormatter(remote)
+	rp := proxy.DefaultHTTPResponseParserFactory(proxy.HTTPResponseParserConfig{Decoder: dec, EntityFormatter: ef})
+	return proxy.NewHTTPProxyDetailed(remote, re, client.NoOpHTTPStatusHandler, rp)
+}
+```
 ![Krakend logo](https://raw.githubusercontent.com/devopsfaith/krakend.io/master/images/logo.png)
 
 # KrakenD
