@@ -86,6 +86,11 @@ func DefaultHTTPResponseParserFactory(cfg proxy.HTTPResponseParserConfig) proxy.
 
 Added custom json render to encoding.go
 
+We can use 
+```
+      "output_encoding": "custom-json",
+```
+
 ---
 
 ![Krakend logo](https://raw.githubusercontent.com/devopsfaith/krakend.io/master/images/logo.png)
