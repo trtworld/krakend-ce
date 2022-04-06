@@ -87,7 +87,8 @@ func DefaultHTTPResponseParserFactory(cfg proxy.HTTPResponseParserConfig) proxy.
 			return nil, err
 		}
 		headers := resp.Header
-		headers.Del("Content-Length") // remove for duplicate header error
+		headers.Del("Content-Length")   // remove for duplicate header error
+		headers.Del("Content-Encoding") // remove for duplicate header error
 		newResponse := proxy.Response{Data: data, IsComplete: true, Metadata: proxy.Metadata{
 			StatusCode: resp.StatusCode, // Send the status code
 			Headers:    headers,         // Send the headers
