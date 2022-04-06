@@ -27,6 +27,67 @@ func NewHTTPProxyWithHTTPExecutor(remote *config.Backend, re client.HTTPRequestE
 	return proxy.NewHTTPProxyDetailed(remote, re, client.NoOpHTTPStatusHandler, rp)
 }
 ```
+Override the DefaultHTTPResponseParserFactory from
+```
+func DefaultHTTPResponseParserFactory(cfg HTTPResponseParserConfig) HTTPResponseParser {
+	return func(ctx context.Context, resp *http.Response) (*Response, error) {
+		defer resp.Body.Close()
+
+		var reader io.ReadCloser
+		switch resp.Header.Get("Content-Encoding") {
+		case "gzip":
+			reader, _ = gzip.NewReader(resp.Body)
+			defer reader.Close()
+		default:
+			reader = resp.Body
+		}
+
+		var data map[string]interface{}
+		if err := cfg.Decoder(reader, &data); err != nil {
+			return nil, err
+		}
+
+		newResponse := Response{Data: data, IsComplete: true}
+		newResponse = cfg.EntityFormatter.Format(newResponse)
+		return &newResponse, nil
+	}
+}
+```
+to
+```
+func DefaultHTTPResponseParserFactory(cfg proxy.HTTPResponseParserConfig) proxy.HTTPResponseParser {
+	return func(ctx context.Context, resp *http.Response) (*proxy.Response, error) {
+		defer resp.Body.Close()
+
+		var reader io.ReadCloser
+		switch resp.Header.Get("Content-Encoding") {
+		case "gzip":
+			reader, _ = gzip.NewReader(resp.Body)
+			defer reader.Close()
+		default:
+			reader = resp.Body
+		}
+
+		var data map[string]interface{}
+		if err := cfg.Decoder(reader, &data); err != nil && err != io.EOF {
+			return nil, err
+		}
+		headers := resp.Header
+		headers.Del("Content-Length") // remove for duplicate header error
+		newResponse := proxy.Response{Data: data, IsComplete: true, Metadata: proxy.Metadata{
+			StatusCode: resp.StatusCode, // Send the status code
+			Headers:    headers,         // Send the headers
+		}}
+		newResponse = cfg.EntityFormatter.Format(newResponse)
+		return &newResponse, nil
+	}
+}
+```
+
+Added custom json render to encoding.go
+
+---
+
 ![Krakend logo](https://raw.githubusercontent.com/devopsfaith/krakend.io/master/images/logo.png)
 
 # KrakenD

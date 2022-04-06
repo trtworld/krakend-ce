@@ -2,10 +2,12 @@ package martian
 
 import (
 	"bytes"
+	"compress/gzip"
 	"context"
 	"encoding/json"
 	"errors"
 	"github.com/luraproject/lura/v2/encoding"
+	"io"
 	"io/ioutil"
 	"net/http"
 
@@ -63,8 +65,36 @@ func NewHTTPProxyWithHTTPExecutor(remote *config.Backend, re client.HTTPRequestE
 	}
 
 	ef := proxy.NewEntityFormatter(remote)
-	rp := proxy.DefaultHTTPResponseParserFactory(proxy.HTTPResponseParserConfig{Decoder: dec, EntityFormatter: ef})
+	rp := DefaultHTTPResponseParserFactory(proxy.HTTPResponseParserConfig{Decoder: dec, EntityFormatter: ef})
 	return proxy.NewHTTPProxyDetailed(remote, re, client.NoOpHTTPStatusHandler, rp)
+}
+
+func DefaultHTTPResponseParserFactory(cfg proxy.HTTPResponseParserConfig) proxy.HTTPResponseParser {
+	return func(ctx context.Context, resp *http.Response) (*proxy.Response, error) {
+		defer resp.Body.Close()
+
+		var reader io.ReadCloser
+		switch resp.Header.Get("Content-Encoding") {
+		case "gzip":
+			reader, _ = gzip.NewReader(resp.Body)
+			defer reader.Close()
+		default:
+			reader = resp.Body
+		}
+
+		var data map[string]interface{}
+		if err := cfg.Decoder(reader, &data); err != nil && err != io.EOF {
+			return nil, err
+		}
+		headers := resp.Header
+		headers.Del("Content-Length") // remove for duplicate header error
+		newResponse := proxy.Response{Data: data, IsComplete: true, Metadata: proxy.Metadata{
+			StatusCode: resp.StatusCode, // Send the status code
+			Headers:    headers,         // Send the headers
+		}}
+		newResponse = cfg.EntityFormatter.Format(newResponse)
+		return &newResponse, nil
+	}
 }
 
 // HTTPRequestExecutor creates a wrapper over the received request executor, so the martian modifiers can be
