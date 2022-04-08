@@ -1,5 +1,5 @@
-ARG GOLANG_VERSION
-ARG ALPINE_VERSION
+ARG GOLANG_VERSION=1.17.8
+ARG ALPINE_VERSION=3.15
 FROM golang:${GOLANG_VERSION}-alpine${ALPINE_VERSION} as builder
 
 RUN apk --no-cache add make gcc musl-dev binutils-gold
