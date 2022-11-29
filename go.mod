@@ -33,7 +33,9 @@ require (
 	github.com/devopsfaith/krakend-xml/v2 v2.0.0
 	github.com/gin-gonic/gin v1.7.7
 	github.com/go-contrib/uuid v1.2.0
-	github.com/luraproject/lura/v2 v2.0.1
+	github.com/google/martian v2.1.1-0.20190517191504-25dcb96d9e51+incompatible
+	github.com/kivra/krakend-correlationid v0.0.0-20221024071953-ae5d0668f7dc
+	github.com/luraproject/lura/v2 v2.0.5
 	golang.org/x/sync v0.0.0-20210220032951-036812b2e83c
 )
 
@@ -95,14 +97,14 @@ require (
 	github.com/gin-contrib/sse v0.1.0 // indirect
 	github.com/go-playground/locales v0.14.0 // indirect
 	github.com/go-playground/universal-translator v0.18.0 // indirect
-	github.com/go-playground/validator/v10 v10.9.0 // indirect
+	github.com/go-playground/validator/v10 v10.11.1 // indirect
 	github.com/go-test/deep v1.0.7 // indirect
+	github.com/goccy/go-json v0.10.0 // indirect
 	github.com/golang/groupcache v0.0.0-20200121045136-8c9f03a8e57e // indirect
 	github.com/golang/protobuf v1.5.2 // indirect
 	github.com/golang/snappy v0.0.3 // indirect
 	github.com/google/cel-go v0.9.0 // indirect
 	github.com/google/go-cmp v0.5.6 // indirect
-	github.com/google/martian v2.1.1-0.20190517191504-25dcb96d9e51+incompatible // indirect
 	github.com/google/uuid v1.2.0 // indirect
 	github.com/google/wire v0.4.0 // indirect
 	github.com/googleapis/gax-go v2.0.2+incompatible // indirect
@@ -130,10 +132,11 @@ require (
 	github.com/juju/ratelimit v1.0.1 // indirect
 	github.com/klauspost/compress v1.13.1 // indirect
 	github.com/kpacha/opencensus-influxdb v0.0.0-20181102202715-663e2683a27c // indirect
+	github.com/krakendio/flatmap v1.1.1 // indirect
 	github.com/leodido/go-urn v1.2.1 // indirect
 	github.com/magiconair/properties v1.8.1 // indirect
 	github.com/mattn/go-colorable v0.1.8 // indirect
-	github.com/mattn/go-isatty v0.0.14 // indirect
+	github.com/mattn/go-isatty v0.0.16 // indirect
 	github.com/matttproud/golang_protobuf_extensions v1.0.1 // indirect
 	github.com/mitchellh/copystructure v1.1.1 // indirect
 	github.com/mitchellh/go-homedir v1.1.0 // indirect
@@ -150,6 +153,7 @@ require (
 	github.com/op/go-logging v0.0.0-20160315200505-970db520ece7 // indirect
 	github.com/openzipkin/zipkin-go v0.2.2 // indirect
 	github.com/pelletier/go-toml v1.7.0 // indirect
+	github.com/pelletier/go-toml/v2 v2.0.6 // indirect
 	github.com/philhofer/fwd v1.0.0 // indirect
 	github.com/pierrec/lz4 v2.6.0+incompatible // indirect
 	github.com/pkg/errors v0.9.1 // indirect
@@ -179,7 +183,7 @@ require (
 	github.com/tmthrgd/go-hex v0.0.0-20180828131331-d1fb3dbb16a1 // indirect
 	github.com/tmthrgd/go-memset v0.0.0-20180828131805-6f4e59bf1e1d // indirect
 	github.com/tmthrgd/go-popcount v0.0.0-20180111143836-3918361d3e97 // indirect
-	github.com/ugorji/go/codec v1.2.6 // indirect
+	github.com/ugorji/go/codec v1.2.7 // indirect
 	github.com/unrolled/secure v0.0.0-20180918153822-f340ee86eb8b // indirect
 	github.com/valyala/fastrand v1.1.0 // indirect
 	github.com/xeipuuv/gojsonpointer v0.0.0-20180127040702-4e3ac2762d5f // indirect
@@ -192,10 +196,10 @@ require (
 	gocloud.dev/pubsub/natspubsub v0.21.0 // indirect
 	gocloud.dev/pubsub/rabbitpubsub v0.21.0 // indirect
 	gocloud.dev/secrets/hashivault v0.21.0 // indirect
-	golang.org/x/crypto v0.0.0-20210921155107-089bfa567519 // indirect
+	golang.org/x/crypto v0.0.0-20211215153901-e495a2d5b3d3 // indirect
 	golang.org/x/net v0.0.0-20220127200216-cd36cc0744dd // indirect
 	golang.org/x/oauth2 v0.0.0-20220223155221-ee480838109b // indirect
-	golang.org/x/sys v0.0.0-20211216021012-1d35b9e2eb4e // indirect
+	golang.org/x/sys v0.2.0 // indirect
 	golang.org/x/text v0.3.7 // indirect
 	golang.org/x/time v0.0.0-20210220033141-f8bda1e9f3ba // indirect
 	golang.org/x/xerrors v0.0.0-20200804184101-5ec99f83aff1 // indirect

@@ -2,6 +2,7 @@ package krakend
 
 import (
 	"github.com/gin-gonic/gin"
+	correlationid "github.com/kivra/krakend-correlationid"
 
 	botdetector "github.com/devopsfaith/krakend-botdetector/v2/gin"
 	httpsecure "github.com/devopsfaith/krakend-httpsecure/v2/gin"
@@ -16,6 +17,7 @@ import (
 // NewEngine creates a new gin engine with some default values and a secure middleware
 func NewEngine(cfg config.ServiceConfig, opt luragin.EngineOptions) *gin.Engine {
 	engine := luragin.NewEngine(cfg, opt)
+	engine.Use(correlationid.HandlerFunc(cfg.ExtraConfig))
 
 	engine.NoRoute(opencensus.HandlerFunc(&config.EndpointConfig{Endpoint: "NoRoute"}, defaultHandler, nil))
 	engine.NoMethod(opencensus.HandlerFunc(&config.EndpointConfig{Endpoint: "NoMethod"}, defaultHandler, nil))
