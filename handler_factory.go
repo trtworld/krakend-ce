@@ -21,7 +21,7 @@ import (
 // NewHandlerFactory returns a HandlerFactory with a rate-limit and a metrics collector middleware injected
 func NewHandlerFactory(logger logging.Logger, metricCollector *metrics.Metrics, rejecter jose.RejecterFactory) router.HandlerFactory {
 	handlerFactory := router.CustomErrorEndpointHandler(logger, TimeoutToHTTPError)
-	handlerFactory = CustomInternalServerError(logger, handlerFactory)
+	handlerFactory = CustomTimeoutHandler(logger, handlerFactory)
 	handlerFactory = juju.NewRateLimiterMw(logger, handlerFactory)
 	handlerFactory = lua.HandlerFactory(logger, handlerFactory)
 	handlerFactory = ginjose.HandlerFactory(handlerFactory, logger, rejecter)
@@ -41,7 +41,7 @@ func (handlerFactory) NewHandlerFactory(l logging.Logger, m *metrics.Metrics, r 
 	return NewHandlerFactory(l, m, r)
 }
 
-func CustomInternalServerError(l logging.Logger, next router.HandlerFactory) router.HandlerFactory {
+func CustomTimeoutHandler(l logging.Logger, next router.HandlerFactory) router.HandlerFactory {
 	return func(remote *config.EndpointConfig, p proxy.Proxy) gin.HandlerFunc {
 		handlerFunc := next(remote, p)
 		return func(c *gin.Context) {
