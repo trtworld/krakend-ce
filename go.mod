@@ -1,10 +1,11 @@
 module github.com/krakendio/krakend-ce/v2
 
-go 1.17
+go 1.20
 
 require (
 	github.com/gin-gonic/gin v1.8.2
 	github.com/go-contrib/uuid v1.2.0
+	github.com/google/martian v2.1.1-0.20190517191504-25dcb96d9e51+incompatible
 	github.com/krakendio/bloomfilter/v2 v2.0.4
 	github.com/krakendio/krakend-amqp/v2 v2.0.0-20230322130405-efe28779b805
 	github.com/krakendio/krakend-audit v0.0.1
@@ -24,7 +25,6 @@ require (
 	github.com/krakendio/krakend-lambda/v2 v2.0.3
 	github.com/krakendio/krakend-logstash/v2 v2.0.1
 	github.com/krakendio/krakend-lua/v2 v2.0.3
-	github.com/krakendio/krakend-martian/v2 v2.0.2
 	github.com/krakendio/krakend-metrics/v2 v2.0.1
 	github.com/krakendio/krakend-oauth2-clientcredentials/v2 v2.0.1
 	github.com/krakendio/krakend-opencensus/v2 v2.1.0
@@ -117,7 +117,6 @@ require (
 	github.com/golang/snappy v0.0.4 // indirect
 	github.com/google/cel-go v0.11.4 // indirect
 	github.com/google/go-cmp v0.5.9 // indirect
-	github.com/google/martian v2.1.1-0.20190517191504-25dcb96d9e51+incompatible // indirect
 	github.com/google/uuid v1.3.0 // indirect
 	github.com/google/wire v0.5.0 // indirect
 	github.com/googleapis/enterprise-certificate-proxy v0.2.0 // indirect
