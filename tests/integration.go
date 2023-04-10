@@ -7,7 +7,6 @@ import (
 	"flag"
 	"fmt"
 	"io"
-	"io/ioutil"
 	"log"
 	"net"
 	"net/http"
@@ -21,6 +20,8 @@ import (
 	"strings"
 	"sync"
 	"time"
+
+	"github.com/xeipuuv/gojsonschema"
 )
 
 var (
@@ -63,9 +64,10 @@ type Input struct {
 
 // Output contains the data required to verify the response received in a given TestCase
 type Output struct {
-	StatusCode int                 `json:"status_code"`
-	Body       interface{}         `json:"body"`
-	Header     map[string][]string `json:"header"`
+	StatusCode int                    `json:"status_code"`
+	Body       interface{}            `json:"body"`
+	Header     map[string][]string    `json:"header"`
+	Schema     map[string]interface{} `json:"schema"`
 }
 
 // CmdBuilder defines an interface for building the cmd to be managed by the Runner
@@ -275,9 +277,9 @@ func assertResponse(actual *http.Response, expected Output) error {
 	}
 
 	var body interface{}
-
+	var bodyBytes []byte
 	if actual.Body != nil {
-		b, err := ioutil.ReadAll(actual.Body)
+		b, err := io.ReadAll(actual.Body)
 		if err != nil {
 			return err
 		}
@@ -289,10 +291,37 @@ func assertResponse(actual *http.Response, expected Output) error {
 		default:
 			_ = json.Unmarshal(b, &body)
 		}
+		bodyBytes = b
 	}
 
-	if !reflect.DeepEqual(body, expected.Body) {
-		errMsgs = append(errMsgs, fmt.Sprintf("unexpected body.\n\t\thave: %v\n\t\twant: %v", body, expected.Body))
+	if len(expected.Schema) != 0 {
+		s, err := json.Marshal(expected.Schema)
+		if err != nil {
+			return responseError{
+				errMessage: append(errMsgs, fmt.Sprintf("problem marshaling the user provided json-schema: %s", err)),
+			}
+		}
+		schema, err := gojsonschema.NewSchema(gojsonschema.NewBytesLoader(s))
+		if err != nil {
+			return responseError{
+				errMessage: append(errMsgs, fmt.Sprintf("problem generating json-schema schema: %s", err)),
+			}
+		}
+		result, err := schema.Validate(gojsonschema.NewBytesLoader(bodyBytes))
+		if err != nil {
+			return responseError{
+				errMessage: append(errMsgs, fmt.Sprintf("problem creating the json-schema validator: %s", err)),
+			}
+		}
+		if !result.Valid() {
+			return responseError{
+				errMessage: append(errMsgs, fmt.Sprintf("the result is not valid: %s", result.Errors())),
+			}
+		}
+	} else if expected.Body != "" {
+		if !reflect.DeepEqual(body, expected.Body) {
+			errMsgs = append(errMsgs, fmt.Sprintf("unexpected body.\n\t\thave: %v\n\t\twant: %v", body, expected.Body))
+		}
 	}
 	if len(errMsgs) == 0 {
 		return nil
@@ -362,7 +391,7 @@ func newRequest(in Input) (*http.Request, error) {
 
 func readSpecs(dirPath string) (map[string][]byte, error) {
 	data := map[string][]byte{}
-	files, err := ioutil.ReadDir(dirPath)
+	files, err := os.ReadDir(dirPath)
 	if err != nil {
 		return data, err
 	}
@@ -371,7 +400,7 @@ func readSpecs(dirPath string) (map[string][]byte, error) {
 		if !strings.HasSuffix(file.Name(), ".json") {
 			continue
 		}
-		content, err := ioutil.ReadFile(path.Join(dirPath, file.Name()))
+		content, err := os.ReadFile(path.Join(dirPath, file.Name()))
 		if err != nil {
 			return data, err
 		}
