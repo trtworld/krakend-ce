@@ -222,7 +222,7 @@ require (
 	github.com/xeipuuv/gojsonreference v0.0.0-20180127040603-bd5ef7bd5415 // indirect
 	github.com/yuin/gopher-lua v0.0.0-20190206043414-8bfc7677f583 // indirect
 	go.opencensus.io v0.24.0 // indirect
-	go.uber.org/atomic v1.10.0 // indirect
+	go.uber.org/atomic v1.11.0 // indirect
 	gocloud.dev v0.28.0 // indirect
 	gocloud.dev/pubsub/kafkapubsub v0.25.0 // indirect
 	gocloud.dev/pubsub/natspubsub v0.25.0 // indirect
