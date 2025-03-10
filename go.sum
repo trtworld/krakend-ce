@@ -512,8 +512,6 @@ github.com/krakendio/krakend-logstash/v2 v2.0.2 h1:1C0F/mZlr9Alj/HyjUyG/bTK8PhJM
 github.com/krakendio/krakend-logstash/v2 v2.0.2/go.mod h1:buiQqKl5Dqv8qjzn4UT2G+bc6iFNYMrMRLK2AGGSaeU=
 github.com/krakendio/krakend-lua/v2 v2.6.1 h1:67uQ8jetf4XcAcWiu2cVIcURU7E0RpwcgufMiC+7+wY=
 github.com/krakendio/krakend-lua/v2 v2.6.1/go.mod h1:MxpmpjD15nILY9QB0q4Vl6BIJGoElYeqE94qHleiATo=
-github.com/krakendio/krakend-martian/v2 v2.1.0 h1:S6fayNjFES35hINVRR+DH4/P44Kx/9jo+gI386D7E6Q=
-github.com/krakendio/krakend-martian/v2 v2.1.0/go.mod h1:A4+ncWPx32yXvuKXNf6p9WTIiNh2L8p/HEafbOUVFlA=
 github.com/krakendio/krakend-metrics/v2 v2.0.1 h1:BFGsbw/Qghfw0OD2+fFRcyavuHWwp78KAnAw9gyzpzQ=
 github.com/krakendio/krakend-metrics/v2 v2.0.1/go.mod h1:FI79Wv/v1Eq/5jHqOav8dL5jGwNxoG7pTxfJ8GfRUL0=
 github.com/krakendio/krakend-oauth2-clientcredentials/v2 v2.1.0 h1:6sLjjM/nVhPEuskltZ8Jw8qYvQAI8UPs1c08F77W4CQ=
